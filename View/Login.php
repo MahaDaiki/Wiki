@@ -13,7 +13,7 @@ ob_start();
                     <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
                     <div class="login-space">
                         <!-- Login Form -->
-                        <form method="post" action="index.php?action=Login">
+                        <form id="loginForm" method="post" action="index.php?action=Login">
                             <div class="login">
                                 <div class="group">
                                     <label for="login-user" class="label">Username</label>
@@ -31,7 +31,7 @@ ob_start();
                         </form>
 
                         <!-- Register Form -->
-                      <form method="post" action="index.php?action=Register" class="sign-up-form" onsubmit="return validateForm();">
+                      <form id="registerForm" method="post" action="index.php?action=Register" class="sign-up-form" onsubmit="return validateForm();">
               <div class="group">
                 <label for="signup-user" class="label">Username</label>
                 <input id="signup-user" name="signup-user" type="text" class="input" placeholder="Username" required>
@@ -41,9 +41,9 @@ ob_start();
                 <input id="signup-email" name="signup-email" type="email" class="input" placeholder="Email address" required>
               </div>
               <div class="group">
-                <label for="signup-pass" class="label">Password </label>
+                <label for="signup-pass" class="label">Password<span class="password-toggle" onclick="togglePassword('signup-pass', 'eye-signup-pass')">👁️</span> </label>
                 <input id="signup-pass" name="signup-pass" type="password" class="input" data-type="password" placeholder="password" required>
-                
+               
               </div>
               <div class="group">
                 <label for="signup-pass-repeat" class="label">Password Verification <span class="password-toggle" onclick="togglePassword('signup-pass-repeat', 'eye-signup-pass-repeat')">👁️</span></label>
@@ -62,14 +62,6 @@ ob_start();
   </div>
 </div>
 
-
-                      
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 

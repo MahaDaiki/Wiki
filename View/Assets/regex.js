@@ -38,3 +38,20 @@ function togglePassword(inputId, eyeId) {
     eyeIcon.textContent = type === 'password' ? '👁️' : '👁️';
 }
 
+// function switchForm(tab) {
+
+//     if (tab === 'login') {
+//         history.pushState(null, null, 'index.php?action=Login');
+//     } else {
+//         history.pushState(null, null, 'index.php?action=Register');
+//     }
+// }
+// document.getElementById('loginForm').addEventListener('submit', function () {
+//     switchForm('login');
+// });
+
+// document.getElementById('registerForm').addEventListener('submit', function () {
+//     switchForm('register');
+// });
+
+
