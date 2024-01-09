@@ -1,24 +1,27 @@
 <?php
 
-class Wiki {
+class ClassWiki {
     private $wiki_id;
     private $user_id;
-    private $category_name;
+    private $category_id;
     private $title;
     private $content;
     private $date_created;
     private $archived;
 
-    public function __construct($wiki_id, $user_id, $category_name, $title, $content, $date_created, $archived ) {
+    private $tag;
+
+    public function __construct($wiki_id, $user_id, $category_id, $title, $content, $date_created, $archived,$tags ) {
 
         $this->wikiId = $wiki_id;
         $this->userId = $user_id;
-        $this->categoryName = $category_name;
+        $this->category_id= $category_id;
         $this->title = $title;
         $this->content = $content;
         $this->dateCreated = $date_created ;
         // ?: date('Y-m-d H:i:s');
         $this->archived = $archived;
+        $this->tag=$tags;
     }
 
     /**
@@ -38,8 +41,8 @@ class Wiki {
     /**
      * Get the value of category_name
      */ 
-    public function getCategory_name() {
-        return $this->category_name;
+    public function getCategory_id() {
+        return $this->category_id;
     }
 
     /**
@@ -68,6 +71,14 @@ class Wiki {
      */ 
     public function getArchived() {
         return $this->archived;
+    }
+
+    /**
+     * Get the value of tag
+     */ 
+    public function getTag()
+    {
+        return $this->tag;
     }
 }
 

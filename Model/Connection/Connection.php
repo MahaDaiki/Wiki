@@ -1,5 +1,5 @@
 <?php 
-require_once("Model\config\db_config.php");
+require_once("Model\Connection\db_config.php");
 class DatabaseConnection {
     private $pdo;
     private static $instance;
