@@ -46,5 +46,16 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"</script>
   <script>src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"</script>
+  <script src="https://cdn.tiny.cloud/1/vdgfhpi0lq57jzd9l2wypmfc7bo4e88zff2tki8430adzdqp/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  
+  <script>
+  tinymce.init({
+    selector: '#Wiki-content',
+    height: 400,
+    plugins: 'autoresize',
+    toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+    autoresize_bottom_margin: 16,
+  });
+</script>
 </body>
 </html>

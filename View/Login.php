@@ -16,8 +16,8 @@ ob_start();
                         <form id="loginForm" method="post" action="index.php?action=Login">
                             <div class="login">
                                 <div class="group">
-                                    <label for="login-user" class="label">Username</label>
-                                    <input id="login-user" name="login-user" type="text" class="input" placeholder="Enter your username">
+                                    <label for="login-user" class="label">Email</label>
+                                    <input id="login-user" name="login-user" type="Email" class="input" placeholder="Enter your Email">
                                 </div>
                                 <div class="group">
                                     <label for="login-pass" class="label">Password</label>

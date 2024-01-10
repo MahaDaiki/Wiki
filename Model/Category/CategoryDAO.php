@@ -3,7 +3,7 @@
 include_once 'Model\Connection\Connection.php';
 include_once 'Model\Category\ClassCategory.php';
 
-class CategoriesDAO {
+class CategoryDAO {
     private $pdo;
 
     public function __construct(){
