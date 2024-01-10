@@ -11,9 +11,9 @@ class CategoryDAO {
     }
 
     public function addCategory($category) {
-        $query = "INSERT INTO categories (category_name) VALUES (?)";
+        $query = "INSERT INTO categories (category_name) VALUES ('".$category->getCategory_name()."')";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$category->getCategory_name()]);
+        $stmt->execute();
     }
 
     public function getAllCategories() {

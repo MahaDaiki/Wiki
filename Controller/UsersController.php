@@ -87,7 +87,7 @@ Class UsersController{
                             exit();
                         } elseif ($user['role'] == 'admin') {
                             $_SESSION['role'] = 'admin';
-                            header("Location: admin_dashboard.php");
+                            header("Location: /index.php?action=admindashboard");
                             exit();
                         }
                     } else {

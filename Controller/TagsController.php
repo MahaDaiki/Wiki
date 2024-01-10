@@ -8,10 +8,53 @@ Class TagsController{
             $this->TagsDAO = new TagsDAO();
         }
 
-        public function DisplayTags(){
-            $Tags = $this->TagsDAO->getAllTags();
+        // public function Display(){
+        //     $Tags = $this->TagsDAO->getAllTags();
 
-            include_once "";
+        //     include_once "View\AdminDashboard.php";
+        // }
+        public function AddTags(){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+               
+                $Tag = $_POST['Tag'];
+              
+                $Tags = new ClassTag(0,$Tag );
+    
+              
+                $this->TagsDAO->addTag($Tags);
+              
+                header("Location: index.php?action=Admindashboardd");
+                exit();
+            }
         }
+         public function ModifyTag($tag_id){
+            // $Tag = $this->TagsDAO->getTagById($tag_id);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $Tag = $_POST['modifiedTagName'];
+            // $existingTag = $this->TagsDAO->getTagById($tag_id);
+             $existingTag = new ClassTag( $tag_id,$Tag);
+             var_dump($existingTag);
+            //  var_dump($existingTag);
+            $this->TagsDAO->updateTag($existingTag);
+            
+                // header("Location: index.php?action=Admindashboardd");
 
+            
+               
+               
+            } 
+        }
+            public function DeleteTag($cat_id){
+                $Tag = $this->TagsDAO->getTagById($cat_id);
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+                    $this->TagsDAO->deleteTag($cat_id);
+        
+                    header("Location: index.php?action=");//action khawya
+                    exit();
+                } else {
+                   
+                }
+            }
+    
     }

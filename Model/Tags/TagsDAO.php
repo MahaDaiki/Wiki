@@ -10,10 +10,10 @@ class TagsDAO {
         $this->pdo = DatabaseConnection::getInstance()->getConnection(); 
     }
 
-    public function addTag($tag) {
-        $query = "INSERT INTO tags (tag_id, tag) VALUES (0,?)";
+    public function addTag($Tag) {
+        $query = "INSERT INTO tags (tag_id, tag) VALUES (0,'".$Tag->getTag()."')";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$tag->getTag_id(),$tag->getTag()]);
+        $stmt->execute();
     }
     public function gettag($idWIKI){
         $query = "SELECT * FROM tags inner join wikitag on  idtag=wikitag.idtag and wikitag.idwiki=$idWIKI ";
@@ -29,6 +29,20 @@ class TagsDAO {
         return $tags;
 
     }
+
+    public function getTagById($tagId) {
+        $query = "SELECT * FROM tags WHERE tag_id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$tagId]);
+        $tagData = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($tagData) {
+            return new ClassTag($tagData['tag_id'], $tagData['tag']);
+        }
+    
+        return null; 
+    }
+    
     public function getAllTags() {
         $query = "SELECT * FROM tags";
         $stmt = $this->pdo->prepare($query);
@@ -45,15 +59,16 @@ class TagsDAO {
 
 
     public function updateTag($tag) {
-        $query = "UPDATE tags SET tag = ? WHERE tag_id = ?";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$tag->getTag(), $tag->getTagId()]);
+        $query = "UPDATE tags SET tag = '". $tag->getTag()."' WHERE tag_id = ".$tag->getTag_id();
+        $stmt = $this->pdo->query($query);
+        var_dump($stmt);
+        $stmt->execute();
     }
     
     public function deleteTag($tag) {
         $query = "DELETE FROM tags WHERE tag_id = ?";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$tag->getTagId()]);
+        $stmt->execute([$tag->getTag_id()]);
     }
 }
 

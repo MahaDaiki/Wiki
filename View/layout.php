@@ -8,11 +8,15 @@
   <link rel="stylesheet" href="View\Assets\Style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-ezjUdF3QI1QdF8TzOMLqjnPz8raAJejjA0+jL5L4E0R5eQIcfGa3zPc5S5fRWJ5"
   crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.1.0/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <title>
         <?= $title ?>
     </title>
 </head>
-<body>
+<body style="background:#f3e3d4 !important">
 
   <!-- Navigation Bar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
