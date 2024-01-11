@@ -59,10 +59,9 @@ class TagsDAO {
 
 
     public function updateTag($tag) {
-        $query = "UPDATE tags SET tag = '". $tag->getTag()."' WHERE tag_id = ".$tag->getTag_id();
-        $stmt = $this->pdo->query($query);
-        var_dump($stmt);
-        $stmt->execute();
+        $query = "UPDATE tags SET tag = ? WHERE tag_id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$tag->getTag(), $tag->getTag_id()]);
     }
     
     public function deleteTag($tag) {

@@ -46,12 +46,14 @@ class CategoryDAO {
     public function updateCategory($category) {
         $query = "UPDATE categories SET category_name = ? WHERE cat_id = ?";
         $stmt = $this->pdo->prepare($query);
+      
         $stmt->execute([$category->getCategory_name(), $category->getCat_id()]);
     }
 
     public function deleteCategory($cat_id) {
         $query = "DELETE FROM categories WHERE cat_id = ?";
         $stmt = $this->pdo->prepare($query);
+        var_dump($stmt);
         $stmt->execute([$cat_id]);
     }
 }

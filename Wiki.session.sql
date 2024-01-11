@@ -49,4 +49,3 @@ CREATE TABLE wiki_tags (
 
 
 
-INSERT INTO tags ( tag) VALUES ('Artist') ,('UI/UX'),('PHP')

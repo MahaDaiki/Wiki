@@ -29,6 +29,8 @@ if (ISSET($_GET['action'])){
 
     case 'Authentification':
         $Usercontroller->login();
+        break;
+    case'Register':
         $Usercontroller->registerAutor();
         break;
     case 'WikisAdd':
@@ -49,6 +51,15 @@ if (ISSET($_GET['action'])){
         break;
     case 'ModifyTag':
         $TagsController->ModifyTag($_GET['tag_id']);
+        break;
+    case'DeleteCategory':
+        $CategoryController->DeleteCategory($_GET['cat_id']);
+        break;
+    case 'DeleteTag':
+        $TagsController->DeleteTag($_GET['tag_id']);
+        break;
+    case 'Logout':
+        $Usercontroller->logout();
         break;
     
         

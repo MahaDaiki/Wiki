@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Blog Template</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+
+        .hero-image {
+            background: url('https://via.placeholder.com/1200x300') center/cover no-repeat;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .article-card {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .article img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .categories, .tags {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .categories a, .tags a {
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .tag-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="hero-image"></div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="mt-4 mb-4">Latest Articles</h1>
+
+            <div class="article-card" onclick="location.href='article-details.html';">
+                <div class="card">
+                    <img src="https://via.placeholder.com/800x400" alt="Article Image" class="card-img-top">
+                    <div class="card-body">
+                        <h2 class="card-title">Article Title 1</h2>
+                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="categories">Categories: <span class="category-badge">Category1</span>, <span class="category-badge">Category2</span></div>
+                        <div class="tags">Tags: <span class="tag-badge">Tag1</span>, <span class="tag-badge">Tag2</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add more article cards as needed -->
+        </div>
+
+        <div class="col-lg-4">
+            <h2 class="mt-4 mb-3">Categories</h2>
+            <ul class="categories">
+                <li><a href="#">Category1</a></li>
+                <li><a href="#">Category2</a></li>
+                <li><a href="#">Category3</a></li>
+                <!-- Add more categories as needed -->
+            </ul>
+
+            <h2 class="mt-4 mb-3">Tags</h2>
+            <ul class="tags">
+                <li><a href="#">Tag1</a></li>
+                <li><a href="#">Tag2</a></li>
+                <li><a href="#">Tag3</a></li>
+                <!-- Add more tags as needed -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

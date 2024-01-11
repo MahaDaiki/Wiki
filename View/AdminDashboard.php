@@ -1,3 +1,11 @@
+<?php 
+session_start();
+
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+   
+    header("Location: index.php?action=Authentification"); 
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,13 +42,13 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i>=</a>
                 </li>
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/index.php?action=Logout">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
                 </li>
@@ -128,10 +136,62 @@
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-warning" data-toggle="modal"
-                                                            data-target="#modifyCategoryModal">Modify</button>
-                                                        <button type="button" class="btn btn-danger">Delete</button>
+                                                            data-target="#modifyCategoryModal<?= $cat->getCat_id() ?>">Modify</button>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteCategoryModal<?= $cat->getCat_id() ?>">Delete</button>
+
+                                                        
                                                     </td>
                                                 </tr>
+                                                <!-- Modify Category Modal -->
+                                                <div class="modal fade" id="modifyCategoryModal<?= $cat->getCat_id() ?>" tabindex="-1" role="dialog"
+        aria-labelledby="modifyCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modifyCategoryModalLabel">Modify Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post"
+                    action="index.php?action=ModifyCategory&cat_id=<?= $cat->getCat_id() ?>"class="card">
+                        <div class="form-group">
+                            <label for="modifiedCategoryName">Category Name</label>
+                            <input type="text" class="form-control" id="modifiedCategoryName"
+                                name="modifiedCategoryName"  value="<?= $cat->getCategory_name() ?>" required>
+                        </div>
+                        <button type="submit" class="btn btn-warning btn-sm">Modify</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+
+<!-- Delete Category Modal -->
+<div class="modal fade" id="deleteCategoryModal<?= $cat->getCat_id() ?>" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCategoryModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this category? '<?= $cat->getCategory_name() ?>'</p>
+            </div>
+            <div class="modal-footer">
+                <form action="index.php?action=DeleteCategory&cat_id=<?= $cat->getCat_id() ?>" method="post" >
+                <button type="button" class="btn btn-secondary btn_sm " data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+            </div>
+        </div>
+    </div>
+</div>
+
                                             <?php endforeach ?>
                                         </tbody>
                                     </table>
@@ -171,7 +231,7 @@
                                                     <td>
                                                         <button type="button" class="btn btn-warning" data-toggle="modal"
                                                             data-target="#modifyTagModal<?= $tag->getTag_id() ?>">Modify</button>
-                                                        <button type="button" class="btn btn-danger">Delete</button>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteTagModal<?= $tag->getTag_id()?>">Delete</button>
                                                     </td>
                                                 </tr>
                                                 
@@ -196,7 +256,7 @@
                                                                         <label for="modifiedTagName">Tag Name</label>
                                                                         <input type="text" class="form-control"
                                                                             id="modifiedTagName" name="modifiedTagName"
-                                                                            value="<?= $tag->getTag() ?>" >
+                                                                            value="<?= $tag->getTag() ?>" required>
                                                                     </div>
                                                                     <button type="submit"
                                                                         class="btn btn-warning btn-sm">Modify</button>
@@ -205,7 +265,27 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+<!-- Delete Category Modal -->
+<div class="modal fade" id="deleteTagModal<?= $tag->getTag_id() ?>" tabindex="-1" role="dialog" aria-labelledby="deleteTagModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteTagModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this Tag? '<?= $tag->getTag() ?>'</p>
+            </div>
+            <div class="modal-footer">
+                <form action="index.php?action=DeleteTag&tag_id=<?= $tag->getTag_id() ?>" method="post" >
+                <button type="button" class="btn btn-secondary btn_sm " data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+            </div>
+        </div>
+    </div>
+</div>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
@@ -241,30 +321,7 @@
         </div>
     </div>
 
-    <!-- Modify Category Modal -->
-    <div class="modal fade" id="modifyCategoryModal" tabindex="-1" role="dialog"
-        aria-labelledby="modifyCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modifyCategoryModalLabel">Modify Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="post" class="card">
-                        <div class="form-group">
-                            <label for="modifiedCategoryName">Category Name</label>
-                            <input type="text" class="form-control" id="modifiedCategoryName"
-                                name="modifiedCategoryName">
-                        </div>
-                        <button type="submit" class="btn btn-warning btn-sm">Modify</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- Add Tag Modal -->
     <div class="modal fade" id="addTagModal" tabindex="-1" role="dialog" aria-labelledby="addTagModalLabel"
@@ -290,7 +347,7 @@
         </div>
     </div>
 
-    <!-- Modify Tag Modal -->
+   
 
 
 

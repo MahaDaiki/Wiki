@@ -33,28 +33,27 @@ Class TagsController{
                 $Tag = $_POST['modifiedTagName'];
             // $existingTag = $this->TagsDAO->getTagById($tag_id);
              $existingTag = new ClassTag( $tag_id,$Tag);
-             var_dump($existingTag);
+          
             //  var_dump($existingTag);
             $this->TagsDAO->updateTag($existingTag);
             
-                // header("Location: index.php?action=Admindashboardd");
+                header("Location: index.php?action=Admindashboardd");
 
             
                
                
             } 
         }
-            public function DeleteTag($cat_id){
-                $Tag = $this->TagsDAO->getTagById($cat_id);
+            public function DeleteTag($tag_id){
+                // $Tag = $this->TagsDAO->getTagById($tag_id);
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
-                    $this->TagsDAO->deleteTag($cat_id);
+                    $this->TagsDAO->deleteTag($tag_id);
         
-                    header("Location: index.php?action=");//action khawya
-                    exit();
-                } else {
-                   
-                }
+                    header("Location: index.php?action=Admindashboardd");
+
+                    
+                } 
             }
     
     }

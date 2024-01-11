@@ -57,8 +57,10 @@ Class UsersController{
                 $hashedpassword = password_hash($password, PASSWORD_BCRYPT); 
                     echo "Registration successful!"; 
                     $user = new ClassUsers(0,$username, $email, $hashedpassword, 0);
+
         
                 $result = $this->userDAO->registerUser($user);
+                header("Location: /index.php?action=Authentification");
                 } else {
                 
                     echo "Registration failed. Please try again.";
@@ -87,7 +89,7 @@ Class UsersController{
                             exit();
                         } elseif ($user['role'] == 'admin') {
                             $_SESSION['role'] = 'admin';
-                            header("Location: /index.php?action=admindashboard");
+                            header("Location: /index.php?action=Admindashboardd");
                             exit();
                         }
                     } else {
@@ -96,8 +98,18 @@ Class UsersController{
                 }
                  include_once "View\Login.php";
             }
+
+            public function logout()
+            {
+               session_start();
+                $_SESSION = array();
+                session_destroy();
+                header("Location: index.php?action=Authentification");
+                exit();
+            }
        
         }
+
 
 // $authController = new AuthController();
 // $authController->login();

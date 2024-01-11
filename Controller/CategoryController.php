@@ -35,14 +35,14 @@ Class CategoryController{
      public function ModifyCategory($cat_id){
         // getCategoryById($cat_id)
 
-        $Cat = $this->categoryDAO->getCategoryById($cat_id);
+        // $Cat = $this->categoryDAO->getCategoryById($cat_id);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $Cat_name = $_POST['Cat_name'];
-        $existingCategory = $this->categoryDAO->getCategoryById($cat_id);
-         $existingCategory = new ClassCategory( 0,$Cat_name,0);
+            $Cat_name = $_POST['modifiedCategoryName'];
+      
+         $existingCategory = new ClassCategory( $cat_id,$Cat_name,0);
          
         $this->categoryDAO->updateCategory($existingCategory);
-            
+            // var_dump($existingCategory);
             header("Location: index.php?action=Admindashboardd");
            
         } else {
@@ -50,13 +50,13 @@ Class CategoryController{
         }
     }
         public function DeleteCategory($cat_id){
-            $Cat = $this->categoryDAO->getCategoryById($cat_id);
+            // $Cat = $this->categoryDAO->getCategoryById($cat_id);
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
                 $this->categoryDAO->deleteCategory($cat_id);
     
-                header("Location: index.php?action=Admindashboardd");//action khawya
-                exit();
+                header("Location: index.php?action=Admindashboardd");
+      
             } else {
                
             }
