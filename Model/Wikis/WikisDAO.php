@@ -23,17 +23,24 @@ class WikisDAO {
         return $wikis;
     }
 
-    public function addWiki($wiki) {
-        $query="INSERT INTO wikis (user_id, category_name, title, content) VALUES (?, ?, ?, ?)";
+    public function addWiki($wiki, $imageFileName) {
+        // Insert into wikis table
+        $query = "INSERT INTO wikis (user_id, cat_id, title, content, image) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$wiki->getUser_id(), $wiki->getCategory_name(), $wiki->getTitle(), $wiki->getContent()]);
-        foreach($wiki->getTag() as $tag){
-            $query="INSERT INTO wikistag values(1,$tag->getIDtag())";
-//get last id function  fblast 1 to insert dkshi
+        $stmt->execute([$wiki->getUser_id(), $wiki->getCat_id(), $wiki->getTitle(), $wiki->getContent(), $imageFileName]);
+    
+        // Get the last inserted wiki_id
+        $wiki_id = $this->pdo->lastInsertId();
+    
+        // Insert tags into wiki_tags table
+        foreach ($wiki->getTag() as $tag) {
+            $query = "INSERT INTO wiki_tags (wiki_id, tag_id) VALUES (?, ?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$wiki_id, $tag->getTag_id()]);
         }
-
-
     }
+    
+    
 
     public function modifyWiki($wiki) {
         $query="UPDATE wikis SET category_name = ?, title = ?, content = ? WHERE wiki_id = ?";
@@ -48,7 +55,9 @@ class WikisDAO {
         $wikidetails=$stmt->fetch(PDO::FETCH_ASSOC);
         $wiki=array();
         if($wikidetails){
-            $wiki[] = new ClassWiki($wiki['wiki_id'],$wiki['user_id'],$wiki['category_name'],$wiki['title'],$wiki['content'],$wiki['date_created'],$wiki['archived']);
+            //define tags
+            
+            $wiki[] = new ClassWiki($wiki['wiki_id'],$wiki['user_id'],$wiki['category_name'],$wiki['title'],$wiki['content'],$wiki['date_created'],$wiki['archived'],$tags,$wiki['image']);
         }
 
         return $wiki;

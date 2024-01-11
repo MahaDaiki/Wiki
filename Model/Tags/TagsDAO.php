@@ -69,6 +69,24 @@ class TagsDAO {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$tag->getTag_id()]);
     }
-}
 
+    public function getTagIdsByNames($tagNames) {
+        $tagIds = [];
+
+        foreach ($tagNames as $tagName) {
+            $query = "SELECT tag_id FROM tags WHERE tag = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$tagName]);
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                $tagIds[] = $result['tag_id'];
+                return $tagIds;
+            }
+            else 
+            return NULL;
+        }
+    }
+}
 ?>

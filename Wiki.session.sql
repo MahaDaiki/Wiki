@@ -47,5 +47,8 @@ CREATE TABLE wiki_tags (
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id)
 );
 
+ALTER TABLE wikis
+ADD COLUMN image VARCHAR(255);
+
 
 

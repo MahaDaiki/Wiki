@@ -177,4 +177,12 @@ color: #686767;
   .nav-sidebar .nav-item .nav-link {
 	color: #7D6E83 !important;
   }
-
+ /* addform */
+ .form-control:hover {
+	border-color: #584f4f;
+}
+.addform{
+	background-color: #777474;
+	border-radius: 10px; 
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

@@ -1,9 +1,9 @@
 <?php 
 session_start();
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-   
+if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
     header("Location: index.php?action=Authentification"); 
+    exit();
 }
 ?>
 <!DOCTYPE html>

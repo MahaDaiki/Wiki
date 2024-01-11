@@ -56,6 +56,18 @@ class CategoryDAO {
         var_dump($stmt);
         $stmt->execute([$cat_id]);
     }
+
+    public function getCategoryIdByName($categoryName) {
+        $query = "SELECT cat_id FROM categories WHERE category_name = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$categoryName]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result['cat_id'];
+        }
+        return null;
+    }
 }
 
 ?>

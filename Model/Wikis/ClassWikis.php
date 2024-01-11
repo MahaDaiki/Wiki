@@ -3,7 +3,7 @@
 class ClassWiki {
     private $wiki_id;
     private $user_id;
-    private $category_id;
+    private $cat_id;
     private $title;
     private $content;
     private $date_created;
@@ -11,17 +11,21 @@ class ClassWiki {
 
     private $tag;
 
-    public function __construct($wiki_id, $user_id, $category_id, $title, $content, $date_created, $archived,$tags ) {
+    private $image;
+
+    public function __construct($wiki_id, $user_id, $cat_id, $title, $content, $date_created, $archived,$tags,$image ) {
 
         $this->wikiId = $wiki_id;
         $this->userId = $user_id;
-        $this->category_id= $category_id;
+        $this->cat_id= $cat_id;
         $this->title = $title;
         $this->content = $content;
         $this->dateCreated = $date_created ;
-        // ?: date('Y-m-d H:i:s');
+        // date('Y-m-d H:i:s');
         $this->archived = $archived;
         $this->tag=$tags;
+        $this->image=$image;
+
     }
 
     /**
@@ -41,8 +45,8 @@ class ClassWiki {
     /**
      * Get the value of category_name
      */ 
-    public function getCategory_id() {
-        return $this->category_id;
+    public function getCat_id() {
+        return $this->cat_id;
     }
 
     /**
@@ -79,6 +83,14 @@ class ClassWiki {
     public function getTag()
     {
         return $this->tag;
+    }
+
+    /**
+     * Get the value of image
+     */ 
+    public function getImage()
+    {
+        return $this->image;
     }
 }
 

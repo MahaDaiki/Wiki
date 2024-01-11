@@ -82,13 +82,13 @@ Class UsersController{
                         session_start();
                         $_SESSION['user_id'] = $user['user_id'];
                         $_SESSION['username'] = $user['username'];
-        
+            
                         if ($user['role'] == 'auteur') {
-                            $_SESSION['role'] = 'auteur';
+                            $_SESSION['auteur_role'] = true;
                             header("Location: home.php");
                             exit();
                         } elseif ($user['role'] == 'admin') {
-                            $_SESSION['role'] = 'admin';
+                            $_SESSION['admin_role'] = true;
                             header("Location: /index.php?action=Admindashboardd");
                             exit();
                         }
@@ -111,8 +111,6 @@ Class UsersController{
         }
 
 
-// $authController = new AuthController();
-// $authController->login();
 
 
 
