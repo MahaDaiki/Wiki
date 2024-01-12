@@ -13,9 +13,11 @@ if (!isset($_SESSION['auteur_role']) || $_SESSION['auteur_role'] !== true) {
 <h1 class="display-3 text-center  mt-2" style="color:#8c7387">ADD A WIKI</h1>
 <div class="container mt-5 p-4 mb-3" style="background-color: #777474; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
     <form action="index.php?action=WikisAdd" method="post" enctype="multipart/form-data">
+        <input type="hidden" value="<?=$_SESSION['user_id']?>" name="user_id">
         <div class="mb-3">
             <label for="Title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="Title" name="Title" required maxlength="200">
+    
+            <input type="text" class="form-control" id="Title" name="Title" >
         </div>
 
         <div class="mb-3">
@@ -28,7 +30,7 @@ if (!isset($_SESSION['auteur_role']) || $_SESSION['auteur_role'] !== true) {
                 <label for="Category" class="form-label">Category</label>
                 <select class="form-select" id="Category" name="Category" required>
                     <?php foreach ($Category as $Cat): ?>
-                        <option><?= $Cat->getCategory_name() ?></option>
+                        <option value="<?= $Cat->getCat_id() ?>"><?= $Cat->getCategory_name() ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -38,8 +40,8 @@ if (!isset($_SESSION['auteur_role']) || $_SESSION['auteur_role'] !== true) {
                 <div class="mb-3">
                     <?php foreach ($Tags as $T): ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="tag<?= $T->getTag_id() ?>" name="Tags[]" value="<?= $T->getTag() ?>">
-                            <label class="form-check-label" for="tag<?= $T->getTag_id() ?>">
+                            <input class="form-check-input" type="checkbox" id="tag" name="Tags[]" value="<?= $T->getTag_id() ?>">
+                            <label class="form-check-label" for="tag">
                                 <?= $T->getTag() ?>
                             </label>
                         </div>

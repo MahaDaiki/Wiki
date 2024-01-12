@@ -61,7 +61,12 @@ if (ISSET($_GET['action'])){
     case 'Logout':
         $Usercontroller->logout();
         break;
-    
+    case'Displaydetail':
+        $Wikiscontroller->DisplayDetailsWiki($_GET['Wiki_id']);
+        break;
+    case 'Search':
+        $Wikiscontroller->searchAction();
+        break;
         
 
     // default:
@@ -70,8 +75,8 @@ if (ISSET($_GET['action'])){
 } 
 
 } else{   
-    // $HomeController = new  ControllerHome();
-    //     $HomeController->index();
+    $Wikiscontroller = new WikisController();
+      $Wikiscontroller->DisplayWiki();
  }
 
 

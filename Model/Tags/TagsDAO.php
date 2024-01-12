@@ -16,7 +16,7 @@ class TagsDAO {
         $stmt->execute();
     }
     public function gettag($idWIKI){
-        $query = "SELECT * FROM tags inner join wikitag on  idtag=wikitag.idtag and wikitag.idwiki=$idWIKI ";
+        $query = "SELECT * FROM tags inner join wiki_tags on tags.tag_id=wiki_tags.tag_id and wiki_tags.wiki_id=$idWIKI ";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $tagsData = $stmt->fetchAll(PDO::FETCH_ASSOC);

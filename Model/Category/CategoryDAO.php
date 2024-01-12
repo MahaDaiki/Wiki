@@ -17,7 +17,7 @@ class CategoryDAO {
     }
 
     public function getAllCategories() {
-        $query = "SELECT * FROM categories";
+        $query = "SELECT * FROM categories ORDER BY Cat_date_created DESC ";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $categoriesData = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,7 +35,6 @@ class CategoryDAO {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$cat_id]);
         $categoryData = $stmt->fetch(PDO::FETCH_ASSOC);
-
         if ($categoryData) {
             return new ClassCategory($categoryData['cat_id'], $categoryData['category_name'], $categoryData['cat_date_created']);
         }

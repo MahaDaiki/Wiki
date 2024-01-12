@@ -9,21 +9,21 @@ class ClassWiki {
     private $date_created;
     private $archived;
 
-    private $tag;
+    private $tags;
 
     private $image;
 
     public function __construct($wiki_id, $user_id, $cat_id, $title, $content, $date_created, $archived,$tags,$image ) {
 
-        $this->wikiId = $wiki_id;
-        $this->userId = $user_id;
+        $this->wiki_id = $wiki_id;
+        $this->user_id = $user_id;
         $this->cat_id= $cat_id;
         $this->title = $title;
         $this->content = $content;
-        $this->dateCreated = $date_created ;
+        $this->date_created = $date_created ;
         // date('Y-m-d H:i:s');
         $this->archived = $archived;
-        $this->tag=$tags;
+        $this->tags=$tags;
         $this->image=$image;
 
     }
@@ -80,9 +80,9 @@ class ClassWiki {
     /**
      * Get the value of tag
      */ 
-    public function getTag()
+    public function getTags()
     {
-        return $this->tag;
+        return $this->tags;
     }
 
     /**

@@ -59,4 +59,14 @@ class UserDAO {
 
         return null;
     }
+
+    public function getUsernameById($userId)
+    {
+        $query = "SELECT username FROM Users WHERE user_id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$userId]);
+        $username = $stmt->fetchColumn();
+
+        return $username;
+    }
 }
