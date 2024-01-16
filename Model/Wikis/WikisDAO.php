@@ -1,6 +1,7 @@
 <?php
 include_once 'Model\Connection\Connection.php';
 include_once  'Model\Wikis\ClassWikis.php';
+include_once 'Model\Tags\TagsDAO.php';
 class WikisDAO {
     private $pdo;
 
@@ -8,7 +9,7 @@ class WikisDAO {
         $this->pdo = DatabaseConnection::getInstance()->getConnection(); 
     }
    public function displayAllWikis() {
-        $query="SELECT * FROM wikis ORDER BY date_created DESC";
+        $query="SELECT * FROM wikis  Where archived = 0 ORDER BY date_created DESC";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $wikisdata=$stmt->fetchAll();
@@ -26,10 +27,12 @@ class WikisDAO {
     }
 
     public function addWiki($wiki, $imageFileName) {
+
         // Insert into wikis table
         $query = "INSERT INTO wikis (user_id, cat_id, title, content, image) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$wiki->getUser_id(), $wiki->getCat_id(), $wiki->getTitle(), $wiki->getContent(), $imageFileName]);
+        $title=htmlspecialchars($wiki->getTitle());
+        $stmt->execute([$wiki->getUser_id(), $wiki->getCat_id(),$title, $wiki->getContent(), $imageFileName]);
     
         // Get the last inserted wiki_id
         $wiki_id = $this->pdo->lastInsertId();
@@ -46,34 +49,65 @@ class WikisDAO {
     
     
 
-    public function modifyWiki($wiki) {
-        $query="UPDATE wikis SET category_name = ?, title = ?, content = ? WHERE wiki_id = ?";
+    public function modifyWiki($wiki, $imageFileName) {
+        
+//   var_dump($wiki->getWiki_id());
+            // var_dump($wiki->getTags());
+            $queryWikis = "UPDATE wikis SET cat_id = ?, title = ?, content = ?, image = ? WHERE wiki_id = ?";
+            $title=htmlspecialchars($wiki->getTitle());
+            $stmtWikis = $this->pdo->prepare($queryWikis);
+            $stmtWikis->execute([$wiki->getCat_id(), $title, $wiki->getContent(), $imageFileName, $wiki->getWiki_id()]);
+
+            $queryDeleteTags = "DELETE FROM wiki_tags WHERE wiki_id = ?";
+            $stmtDeleteTags = $this->pdo->prepare($queryDeleteTags);
+            $stmtDeleteTags->execute([$wiki->getWiki_id()]);
+          
+            foreach ($wiki->getTags() as $tag) {
+                $query = "INSERT INTO wiki_tags (wiki_id, tag_id) VALUES (:idWiki, :idTag)";
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute([':idWiki' => $wiki->getWiki_id(), ':idTag' => $tag]);
+            }
+          
+       
+    }
+    
+    
+    public function displayWiki($User_id) {
+        $query = "SELECT * FROM wikis WHERE user_id = ? and archived = 0 ORDER BY date_created DESC";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$wiki->getCategory_name(), $wiki->getTitle(), $wiki->getContent(), $wiki->getWiki_id()]);
-    }
-
-    public function displayWiki($userId) {
-       $query="SELECT * FROM wikis WHERE user_id = ?";
-       $stmt = $this->pdo->prepare($query);
-    $stmt->execute([$userId]);
-        $wikidetails=$stmt->fetch(PDO::FETCH_ASSOC);
-        $wiki=array();
-        if($wikidetails){
+        $stmt->execute([$User_id]);
+        
+        $wikidetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $wikis = array();
+    
+        foreach ($wikidetails as $wikiDetails) {
             $catdao = new CategoryDAO();
-            $cat = $catdao->getCategoryById($wiki['cat_id']);
-            $tagdao=new TagsDAO();
-            $tags=$tagdao->gettag($wiki['wiki_id']);
-            $wiki[] = new ClassWiki($wiki['wiki_id'],$wiki['user_id'], $cat->getCategory_name() ,$wiki['title'],$wiki['content'],$wiki['date_created'],$wiki['archived'],$tags,$wiki['image']);
+            $cat = $catdao->getCategoryById($wikiDetails['cat_id']);
+            $tagdao = new TagsDAO();
+            $tags = $tagdao->gettag($wikiDetails['wiki_id']);
+            
+            $wikis[] = new ClassWiki(
+                $wikiDetails['wiki_id'],
+                $wikiDetails['user_id'],
+                $cat->getCategory_name(),
+                $wikiDetails['title'],
+                $wikiDetails['content'],
+                $wikiDetails['date_created'],
+                $wikiDetails['archived'],
+                $tags,
+                $wikiDetails['image']
+            );
         }
-
-        return $wiki;
+    
+        return $wikis;
     }
+    
     public function displayWikiById($wikiId) {
-        $query = "SELECT * FROM wikis WHERE wiki_id = ?";
+        $query = "SELECT * FROM wikis WHERE wiki_id = ? ";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$wikiId]);
         $wikidetails = $stmt->fetch(PDO::FETCH_ASSOC);
-        $wiki = array();
+        // $wiki = array();
     
         if ($wikidetails) {
             $userdao = new UserDAO();
@@ -83,7 +117,7 @@ class WikisDAO {
             $tagdao = new TagsDAO();
             $tags = $tagdao->gettag($wikidetails['wiki_id']);
     
-            $wiki[] = new ClassWiki(
+            $wikid = new ClassWiki(
                 $wikidetails['wiki_id'],
                 $user,
                 $cat->getCategory_name(),
@@ -98,14 +132,19 @@ class WikisDAO {
             );
         }
     
-        return $wiki;
+        return $wikid;
     }
     
 
     public function deleteWiki($wikiId) {
+        $queryDeleteTags = "DELETE FROM wiki_tags WHERE wiki_id = ?";
+        $stmtDeleteTags = $this->pdo->prepare($queryDeleteTags);
+        $stmtDeleteTags->execute([$wikiId]);
         $query="DELETE FROM wikis WHERE wiki_id = ?";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([$wikiId]);
+      
+
     }
 
     public function archiveWiki($wikiId) {
@@ -114,23 +153,21 @@ class WikisDAO {
         $stmt->execute([$wikiId]);
     }
 
-//     public function getWikiCount()
-// {
-//     $query = "SELECT COUNT(*) as count FROM wikis";
-//     $result = $this->pdo->prepare($query);
-    
+    public function getTagsForWiki($wiki_id)
+    {
+        $query = "SELECT * FROM wiki_tags where wiki_id = $wiki_id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $tags = array();
+        foreach ($result as $row) {
+            $tagDao = new  TagsDAO();
+            $tagbyid = $tagDao->getTagById($row['tag_id']);
+            $tags[] = $tagbyid;
+        }
+        return $tags;
+    }
 
-//     return $result ? (object) ['count' => $result['count']] : (object) ['count' => 0];
-// }
-
-// public function liveSearchWiki($query)
-// {
-//     $query = "SELECT * FROM wikis WHERE title LIKE :query ";
-//     $params = [':query' => '%' . $query . '%'];
-//     $results = $this->pdo->prepare($query, $params);
-
-//     return $results;
-// }
 
 public function searchWikisByQuery($query)
 {
@@ -177,5 +214,49 @@ public function searchWikisByQuery($query)
     return $wiki;
 }
 
+
+    public function getWikisPerUser() {
+      
+            $sql = "SELECT u.username, COUNT(w.wiki_id) as wiki_count
+                    FROM users u
+                    LEFT JOIN wikis w ON u.user_id = w.user_id
+                    WHERE u.role = 'auteur'
+                    GROUP BY u.user_id, u.username";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $userData = [];
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $userData[$row['username']] = $row['wiki_count'];
+            }
+
+            return $userData;
+      
+    }
+
+    public function getWikisPerCategory() {
+        
+            $sql = "SELECT c.category_name, COUNT(w.wiki_id) as wiki_count
+                    FROM categories c
+                    LEFT JOIN wikis w ON c.cat_id = w.cat_id
+                    GROUP BY c.cat_id, c.category_name";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $categoryData = [];
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $categoryData[$row['category_name']] = $row['wiki_count'];
+            }
+
+            return $categoryData;
+     
+    }
+
+  
 }
+
+
+
 

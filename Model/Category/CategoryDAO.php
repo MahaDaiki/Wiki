@@ -11,7 +11,8 @@ class CategoryDAO {
     }
 
     public function addCategory($category) {
-        $query = "INSERT INTO categories (category_name) VALUES ('".$category->getCategory_name()."')";
+        $categories = htmlspecialchars($category->getCategory_name());
+        $query = "INSERT INTO categories (category_name) VALUES ('$categories')";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
     }
@@ -45,8 +46,8 @@ class CategoryDAO {
     public function updateCategory($category) {
         $query = "UPDATE categories SET category_name = ? WHERE cat_id = ?";
         $stmt = $this->pdo->prepare($query);
-      
-        $stmt->execute([$category->getCategory_name(), $category->getCat_id()]);
+        $categories = htmlspecialchars($category->getCategory_name());
+        $stmt->execute([ $categories, $category->getCat_id()]);
     }
 
     public function deleteCategory($cat_id) {

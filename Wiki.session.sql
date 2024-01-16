@@ -51,4 +51,12 @@ ALTER TABLE wikis
 ADD COLUMN image VARCHAR(255);
 
 
+ ALTER TABLE wiki_tags
+ADD CONSTRAINT fk_wiki_tags_wikis
+FOREIGN KEY (wiki_id)
+REFERENCES wikis(wiki_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+
 

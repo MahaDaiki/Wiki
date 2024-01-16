@@ -66,6 +66,7 @@ class WikisController
             $wiki = new ClassWiki(0, $user_id, $cat, $title, $content, 0, 0, $tag, $imageFileName);
             $this->WikiDAO->addWiki($wiki, $imageFileName);
         }
+        // header("Location: index.php?action=Autorprofile");
     }
 
     public function DisplayWiki()
@@ -82,8 +83,7 @@ class WikisController
     }
     public function DisplayDetailsWiki($Wiki_id)
     {
-
-        $wiki = $this->WikiDAO->displayWikiById($Wiki_id);
+        $wikid = $this->WikiDAO->displayWikiById($Wiki_id);
         // $cats=$this->CategoryDAO->getAllCategories();
         // $tags=$this->TagsDAO->getAllTags();
         include_once "View\DetailsWiki.php";
@@ -114,14 +114,75 @@ class WikisController
         // print_r($_GET);
     }
 
-    public function Modifywiki()
+    public function ModifyWiki($wiki_id)
     {
-
+        $Tags = $this->TagsDAO->getAllTags();
+        $taginwiki = $this->WikiDAO->getTagsForWiki($wiki_id);
+        $Category = $this->CategoryDAO->getAllCategories();
+    $wikis = $this->WikiDAO->displayWikiById($wiki_id);
+    // var_dump($taginwiki);
+    include_once "View\EditWiki.php";
+    }
+    public function handleModifyWiki($wiki_id){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $wikis = $this->WikiDAO->displayWikiById($wiki_id);
+            $user_id = $_POST['user_id'];
+            $new_Title = $_POST['new_Title'];
+            $new_content = $_POST['new_content'];
+            $new_Category = $_POST['new_Category'];
+            $new_Tags = isset($_POST['new_Tags']) ? $_POST['new_Tags'] : [];
+            $imageFileName = '';
+    
+        
+            if ($_FILES['new_Image']['error'] == UPLOAD_ERR_OK) {
+                $targetDirectory = 'View/Assets/Imgs/';
+                $imageFileName = $targetDirectory . basename($_FILES['new_Image']['name']);
+                move_uploaded_file($_FILES['new_Image']['tmp_name'], $imageFileName);
+            } else {
+                $imageFileName = $wikis->getImage();
+            }
+    
+            $wiki = new ClassWiki($wiki_id, $user_id, $new_Category, $new_Title, $new_content, 0, 0, $new_Tags, $imageFileName);
+            $this->WikiDAO->modifyWiki($wiki, $imageFileName);
+        }
+  
+    header("Location: index.php?action=Autorprofile");
     }
 
-
-
-
-
+    public function ProfileAutor(){
+        session_start(); 
+        if (isset($_SESSION['auteur_role']) && $_SESSION['auteur_role'] === true) {
+            $User_id = $_SESSION['user_id'];
+//  var_dump($User_id);
+        $wikibyid = $this->WikiDAO->displayWiki($User_id);
+            // var_dump ($wikibyid);
+        include_once "View\Autorprofile.php";
+    }
 
 }
+
+    public function DeleteWiki($wiki_id){
+        session_start();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $this->WikiDAO->deleteWiki($wiki_id) ;
+       header("Location: index.php?action=Autorprofile");
+        }
+    
+}
+public function ArchieveWiki($wiki_id){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $this->WikiDAO->archiveWiki($wiki_id) ;
+         header("Location: index.php");
+          }
+}
+
+public function showStatistics() {
+    $userData = $this->WikiDAO->getWikisPerUser();
+    $categoryData = $this->WikiDAO->getWikisPerCategory();
+
+
+    include 'View\Statistics.php';
+}
+  
+}
+

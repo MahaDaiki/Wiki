@@ -9,66 +9,52 @@ Class UsersController{
         public function __construct() {
             $this->userDAO = new UserDAO();
         }
-        
-            public function registerAutor() {
-                $result = true;
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Get user input
-                 
-                    $username = $_POST['signup-user'];
-                    $email = $_POST['signup-email'];
-                    $password = $_POST['signup-pass'];
-                    $confirm_password = $_POST['signup-pass-repeat'];
-                    //  $role = ['role'] ?: 'auteur'; 
-        
-     
-                // if (!preg_match("/^[a-zA-Z0-9_]{3,20}$/", $username)) {
-                //     echo "Invalid username format";
-                //     return;
-                // }
-        //filter_var($email, FILTER_SANITIZE_EMAIL) for sanitazing email
+           //filter_var($email, FILTER_SANITIZE_EMAIL) for sanitazing email
         //filter_var($email, FILTER_VALIDATE_EMAIL) For checking the email if its a valid email 
-        $usernamePattern = '/^[a-zA-Z0-9_]{2,20}$/';
-        $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/';
-
-        if (preg_match($usernamePattern, $username)) {
-            // Valid username, continue processing
-        } 
-                elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                   $result = false ;
-                   
-                }
-
-        //strlen for password length
+        public function registerAutor() {
+            $result = true;
         
-        elseif (strlen($password) >= 6 && preg_match($passwordPattern, $password)){
-                $result= false ;
-             
-                }
-
-                elseif ($password !== $confirm_password) {
-                  $result= false ;
-
-             
-                }
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Get user input
+                $username = $_POST['signup-user'];
+                $email = $_POST['signup-email'];
+                $password = $_POST['signup-pass'];
+                $confirm_password = $_POST['signup-pass-repeat'];
+        
+                // Regular expression for username
+                $usernamePattern = '/^[a-zA-Z0-9_]{3,20}$/';
                 
+                // Regular expression for password
+                $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/';
         
-              if ($result) {
-                $hashedpassword = password_hash($password, PASSWORD_BCRYPT); 
-                    echo "Registration successful!"; 
-                    $user = new ClassUsers(0,$username, $email, $hashedpassword, 0);
-
+                if (!preg_match($usernamePattern, $username)) {
+                    $result = false;
+                    echo '<span  style=" background:red ; color: white;  display: block; text-align: center; padding: 5px;">Invalid username format</span>';
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $result = false;
+                    echo '<span  style=" background:red ; color: white;  display: block; text-align: center; padding: 5px;">Invalid email format</span>';
+                } elseif (strlen($password) < 6 || !preg_match($passwordPattern, $password)) {
+                    $result = false;
+                    echo '<span  style=" background:red ; color: white;  display: block; text-align: center; padding: 5px;">Invalid password format</span>';
+                } elseif ($password !== $confirm_password) {
+                    $result = false;
+                    echo '<span   style=" background:red ; color: white; display: block; text-align: center; padding: 5px;">Passwords do not match</span>';
+                }
         
-                $result = $this->userDAO->registerUser($user);
-                header("Location: /index.php?action=Authentification");
+                if ($result) {
+                    $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
+                    echo '<span  style="background:green; color: White;display: block; text-align: center; padding: 5px;">Registration successful!</span>';
+                    $user = new ClassUsers(0, $username, $email, $hashedpassword, 0);
+                    $result = $this->userDAO->registerUser($user);
+                    header("Location: /index.php?action=Authentification");
                 } else {
-                
-                    echo "Registration failed. Please try again.";
+                    echo '<span   style=" background:red ; color: white;display: block; text-align: center; padding: 5px;">Registration failed. Please try again.</span>';
                 }
             }
-            
+        
             include_once "View\Login.php";
-            }
+        }
+        
 
 
             public function login() {
@@ -85,7 +71,7 @@ Class UsersController{
             
                         if ($user['role'] == 'auteur') {
                             $_SESSION['auteur_role'] = true;
-                            header("Location: home.php");
+                            header("Location: /index.php");
                             exit();
                         } elseif ($user['role'] == 'admin') {
                             $_SESSION['admin_role'] = true;

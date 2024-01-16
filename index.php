@@ -56,7 +56,7 @@ if (ISSET($_GET['action'])){
         $CategoryController->DeleteCategory($_GET['cat_id']);
         break;
     case 'DeleteTag':
-        $TagsController->DeleteTag($_GET['tag_id']);
+        $TagsController->DeleteTag();
         break;
     case 'Logout':
         $Usercontroller->logout();
@@ -68,6 +68,24 @@ if (ISSET($_GET['action'])){
         $Wikiscontroller->searchAction();
         break;
         
+    case 'Autorprofile':
+        $Wikiscontroller->ProfileAutor();
+        break;
+    case'Modifywiki':
+        $Wikiscontroller->ModifyWiki($_GET['Wiki_id']);
+        break;
+    case 'handleModifyWiki':
+        $Wikiscontroller->handleModifyWiki($_GET['Wiki_id']);
+        break;
+    case 'DeleteWiki':
+        $Wikiscontroller->DeleteWiki($_GET['wiki_id']);
+        break;
+    case 'ArchieveWiki':
+    $Wikiscontroller->ArchieveWiki($_GET['wiki_id']);
+    break;
+    case'Statistiques':
+        $Wikiscontroller->showStatistics();
+        break;
 
     // default:
        

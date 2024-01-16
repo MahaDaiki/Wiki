@@ -52,18 +52,18 @@ ob_start();
     </div>
 </div>
     <div class="article-details mb-5">
-        <?php foreach ($wiki as $wd): ?>
-        <h1 class="mt-4 mb-4"><?= $wd->getTitle()?></h1>
-        <img src="<?=$wd->getImage()?>" alt="Article Image" class="img-fluid mb-4">
-        <p> <?= $wd->getContent()?></p>
+ 
+        
+        <h1 class="mt-4 mb-4"><?= $wikid->getTitle()?></h1>
+        <img src="<?=$wikid->getImage()?>" alt="Article Image" class="img-fluid mb-4">
+        <p> <?= $wikid->getContent()?></p>
        
-        <div class="categories">Categories: <span class="category-badge"><?= $wd->getCat_id()?></span>.
+        <div class="categories">Category: <span class="category-badge"><?= $wikid->getCat_id()?></span>.
         <div class="tags">Tags: 
-        <?php foreach ($wd as $tag): ?>
+        <?php foreach ($wikid->getTags() as $tag): ?>
                                 <span class="tag-badge badge badge-pill badge-primary"><?= $tag->getTag() ?></span>
                             <?php endforeach; ?>
-    </div> <h2 class=text-right>-<?= $wd->getUser_id()?></h2>
-    <?php endforeach; ?>
+    </div> <h2 class=text-right>-<?= $wikid->getUser_id()?></h2>
     <div class="text-right">
     <a href="/index.php?"> More Wikis -></a></div>
 </div>

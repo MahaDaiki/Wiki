@@ -1,9 +1,13 @@
 <?php 
 session_start();
-
+$_SESSION['admin_role'] = true;
 if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
     header("Location: index.php?action=Authentification"); 
-    exit();
+    
+}
+if (isset($_GET['error'])) {
+    $errorMessage = urldecode($_GET['error']);
+    echo '<script>alert("' . $errorMessage . '");</script>';
 }
 ?>
 <!DOCTYPE html>
@@ -66,10 +70,10 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
                 <!-- User Panel -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="https://via.placeholder.com/150" class="img-circle elevation-2" alt="User Image">
+                    <img class="profile-image img-fluid rounded" src="View\Assets\Imgs\pngwing.com.png" alt="Profile Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">User Name</a>
+                        <h3class="d-block"> <?php echo $_SESSION['username'] ?> </h3>
                     </div>
                 </div>
 
@@ -78,21 +82,21 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="index.php?action=Admindashboardd" class="nav-link">
                                 <i class="nav-icon fas fa-home"></i>
-                                <p>Home</p>
+                                <p>Manage</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="index.php?action=Statistiques" class="nav-link">
                                 <i class="nav-icon fas fa-chart-bar"></i>
                                 <p>Statistics</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="/index.php" class="nav-link">
                                 <i class="nav-icon fas fa-tasks"></i>
-                                <p>Manage</p>
+                                <p>Manage Wikis</p>
                             </a>
                         </li>
                     </ul>
@@ -117,6 +121,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
                                     </div>
                                 </div>
                                 <div class="card-body">
+
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -181,6 +186,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
                 </button>
             </div>
             <div class="modal-body">
+                
                 <p>Are you sure you want to delete this category? '<?= $cat->getCategory_name() ?>'</p>
             </div>
             <div class="modal-footer">
@@ -191,6 +197,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
         </div>
     </div>
 </div>
+
 
                                             <?php endforeach ?>
                                         </tbody>
@@ -275,6 +282,7 @@ if (!isset($_SESSION['admin_role']) || $_SESSION['admin_role'] !== true) {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+           
             <div class="modal-body">
                 <p>Are you sure you want to delete this Tag? '<?= $tag->getTag() ?>'</p>
             </div>

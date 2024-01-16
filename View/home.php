@@ -1,10 +1,15 @@
 <?php
 $title = "Home";
 ob_start();
+session_start();
 // var_dump($tags);
 // exit;
 ?>
 <style>
+
+   
+
+    
     .search-box {
         font-size: 20px;
         border: solid 0.3em #000000;
@@ -85,22 +90,20 @@ ob_start();
         <img width="100%" height="500vh" src="View/Assets/Imgs/bck.jpg" alt="Background Image">
     </div>
 </div>
-<div class="row mt-3 ">
+<div class="row mt-3">
     <div class="col-lg-8">
-        <h1 class="mt-4 mb-4">Latest Articles</h1>
+        <h1 class="mt-4 mb-4 container">Latest Articles</h1>
         <?php foreach ($wiki as $w): ?>
-            <div class="card article-card wikis" id=<?= $w->getWiki_id() ?>>
+            <div class="col-9 col-sm-8 card article-card wikis" id=<?= $w->getWiki_id() ?>>
                 <h2 class="text-center">
                     <?= $w->getTitle() ?>
                 </h2>
-
                 <!-- <div class="overlay"></div>  -->
                 <img src="<?= $w->getImage() ?>" alt="Article Image" class="card-img-top">
-
                 <!-- <div class="card-body">
                 </div> -->
                 <div class="card-footer">
-                    <div class="categories">Categories:
+                    <div class="categories">Category:
                         <span class="category-badge badge badge-pill badge-secondary">
                             <?= $w->getCat_id() ?>
                         </span>
@@ -110,17 +113,41 @@ ob_start();
                             <span class="tag-badge badge badge-pill badge-primary">
                                 <?= $tag->getTag() ?>
                             </span>
-                        <?php endforeach; ?>
+                        <?php endforeach; ?> 
                         <div class=text-right>
                             <p> <?= $w->getDate_created() ?>
                             <p>
                                 <a href="index.php?action=Displaydetail&Wiki_id=<?= $w->getWiki_id() ?>"> click for the full
                                     article -></a>
+                                
+                                  <?php if (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === true): ?>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal<?= $w->getWiki_id()?>">Archieve</button>
+                                <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </div>
-
+            <div class="modal fade" id="deleteModal<?= $w->getWiki_id() ?>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to Archieve this WIKI? '<?= $w->getTitle() ?>'</p>
+            </div>
+            <div class="modal-footer">
+                <form action="index.php?action=ArchieveWiki&wiki_id=<?= $w->getWiki_id() ?>" method="post">
+                    <button type="button" class="btn btn-secondary btn_sm" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
         <?php endforeach; ?>
     </div>
@@ -132,7 +159,7 @@ ob_start();
         </form>
 
         <h2 class="mt-4 mb-3">Categories</h2>
-        <div class="d-flex">
+        <div class=" col-10">
             <?php foreach ($cats as $c): ?>
                 <a href="#" class="category-badge badge badge-pill badge-secondary"><?= $c->getCategory_name() ?></a>
             <?php endforeach; ?>
@@ -140,11 +167,12 @@ ob_start();
 
         <h2 class="mt-4 mb-3 ">Tags</h2>
 
-        <div class=" d-flex">
+        <div class=" col-10">
             <?php foreach ($tgs as $t): ?>
                 <a href="#" class="tag-badge badge badge-pill badge-primary">
                     <?= $t->getTag() ?>
                 </a>
+                
             <?php endforeach; ?>
         </div>
     </div>

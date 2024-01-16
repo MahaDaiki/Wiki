@@ -11,7 +11,8 @@ class TagsDAO {
     }
 
     public function addTag($Tag) {
-        $query = "INSERT INTO tags (tag_id, tag) VALUES (0,'".$Tag->getTag()."')";
+        $tagName = htmlspecialchars($Tag->getTag());
+        $query = "INSERT INTO tags (tag_id, tag) VALUES (0,'".$tagName."')";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
     }
@@ -44,7 +45,7 @@ class TagsDAO {
     }
     
     public function getAllTags() {
-        $query = "SELECT * FROM tags";
+        $query = "SELECT * FROM tags ORDER BY tag_id DESC";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $tagsData = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -61,13 +62,17 @@ class TagsDAO {
     public function updateTag($tag) {
         $query = "UPDATE tags SET tag = ? WHERE tag_id = ?";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$tag->getTag(), $tag->getTag_id()]);
+        $tags =  htmlspecialchars($tag->getTag());
+        $stmt->execute([$tags, $tag->getTag_id()]);
     }
     
     public function deleteTag($tag) {
+        $query = "DELETE FROM wiki_tags WHERE tag_id = ?";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([$tag]);
         $query = "DELETE FROM tags WHERE tag_id = ?";
         $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$tag->getTag_id()]);
+        $stmt->execute([$tag]);
     }
 
     public function getTagIdsByNames($tagNames) {

@@ -49,18 +49,33 @@ Class CategoryController{
             echo 'error';
         }
     }
-        public function DeleteCategory($cat_id){
-            // $Cat = $this->categoryDAO->getCategoryById($cat_id);
+    public function DeleteCategory($cat_id) {
+       
+    
+        try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
                 $this->categoryDAO->deleteCategory($cat_id);
-    
                 header("Location: index.php?action=Admindashboardd");
-      
             } else {
-               
+           
             }
+        } catch (PDOException $e) {
+            // Handle the PDO exception
+            $errorMessage = "Error deleting category: " . $e->getMessage();
+            // header("Location: index.php?action=Admindashboardd");
+           
         }
+        $redirectURL = "index.php?action=Admindashboardd";
+        if ($errorMessage !== "") {
+            $redirectURL .= "&error=" . urlencode($errorMessage);
+        }
+    
+        // Redirect to the admin dashboard with or without the error message
+        header("Location: " . $redirectURL);
+        // header("Location: index.php?action=Admindashboardd");
+       
+        
+    }
 
      }
 

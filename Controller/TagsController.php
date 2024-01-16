@@ -44,11 +44,14 @@ Class TagsController{
                
             } 
         }
-            public function DeleteTag($tag_id){
+            public function DeleteTag(){
                 // $Tag = $this->TagsDAO->getTagById($tag_id);
+
+                $id = $_GET['tag_id'];
+               var_dump($id);
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
-                    $this->TagsDAO->deleteTag($tag_id);
+                    $this->TagsDAO->deleteTag($id);
         
                     header("Location: index.php?action=Admindashboardd");
 
