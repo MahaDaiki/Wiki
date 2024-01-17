@@ -14,18 +14,27 @@ Class TagsController{
         //     include_once "View\AdminDashboard.php";
         // }
         public function AddTags(){
+            try{
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                
                 $Tag = $_POST['Tag'];
-              
                 $Tags = new ClassTag(0,$Tag );
-    
-              
                 $this->TagsDAO->addTag($Tags);
-              
+              }
                 header("Location: index.php?action=Admindashboardd");
-                exit();
+                
             }
+            catch (PDOException $e){
+                $errorMessage= "message" . $e->getMessage();
+
+            }
+            $redirectURL = "index.php?action=Admindashboardd";
+            if ($errorMessage !== "") {
+                $redirectURL .= "&error=" . urlencode($errorMessage);
+            }
+        
+            // Redirect to the admin dashboard with or without the error message
+            header("Location: " . $redirectURL);
         }
          public function ModifyTag($tag_id){
             // $Tag = $this->TagsDAO->getTagById($tag_id);
